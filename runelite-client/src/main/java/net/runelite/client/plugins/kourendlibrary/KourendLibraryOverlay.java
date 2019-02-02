@@ -131,7 +131,22 @@ class KourendLibraryOverlay extends Overlay
 					bookIsKnown = true;
 				}
 				Color color = bookIsKnown ? Color.ORANGE : Color.WHITE;
-
+				
+				if (bookIsKnown && book == library.getCustomerBook()) {
+					color = Color.GREEN;
+				}
+				final ItemContainer itemContainer = client.getItemContainer(InventoryID.INVENTORY);
+				if (itemContainer != null && book != null)
+					for (Item item: itemContainer.getItems()) {
+						if (item.getId() == book.getItem()) {
+							color = Color.RED;
+							break;
+						}
+					}
+				if (book != null && (book.isDarkManuscript() || book.equals(Book.VARLAMORE_ENVOY))) {
+					color = Color.RED;
+				}
+				
 				// Render the poly on the floor
 				if (!(bookIsKnown && book == null) && (library.getState() == SolvedState.NO_DATA || book != null || possible.size() > 0))
 				{
